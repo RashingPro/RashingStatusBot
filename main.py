@@ -11,6 +11,7 @@ async def run_pinger_loop():
     while True:
         with open("config.json", "r", encoding="utf-8") as f:
             projects_to_ping = json.load(f)["projects_to_ping"]
+        projects_to_ping = filter(lambda x: not x["ignore_ping_loop"], projects_to_ping)
         for project in projects_to_ping:
             res = await utils.ping_url(project["ping_url"])
             if not res[0]:
