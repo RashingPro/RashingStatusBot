@@ -1,0 +1,12 @@
+{
+  "projects_to_ping": [
+    {
+      "id": 1,
+      "title": "FlyMachineFallSaver | Modrinth",
+      "url": "https://modrinth.com/mod/fly-machine-fall-saver/",
+      "ping_url": "https://api.modrinth.com/v2/project/CAwZ4SrV",
+      "status_success": "Доступен",
+      "status_error": "Не доступен"
+    }
+  ]
+}
