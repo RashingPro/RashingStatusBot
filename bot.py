@@ -71,20 +71,31 @@ async def ping_project(call: TeleTypes.CallbackQuery):
     with open("config.json", "r", encoding="utf-8") as f:
         projects_to_ping: list = json.load(f)["projects_to_ping"]
     filter(lambda x: x["id"] == id, projects_to_ping)
-    url = projects_to_ping[0]["url"]
-    ping_url = projects_to_ping[0]["ping_url"]
+    projects_to_ping: dict = projects_to_ping[0]
+    url = projects_to_ping["url"]
+    ping_url = projects_to_ping["ping_url"]
     message_temp = await bot.edit_message_text(
         chat_id=call.message.chat.id,
         message_id=call.message.id,
         text="Подождите, получаю статус проекта..."
     )
     res = await utils.ping_url(ping_url)
-    text = f"*Проект {projects_to_ping[0]["title"]}*"
+    text = f"*Проект {projects_to_ping["title"]}*"
     text += f"\nURL: {url}"
+    status_success = "В норме"
+    status_error = "Ошибка"
+    try:
+        status_success = projects_to_ping["status_success"]
+    except KeyError:
+        ...
+    try:
+        status_error = projects_to_ping["status_error"]
+    except KeyError:
+        ...
     if res[0]:
-        text += f"\nСтатус: 🟢В норме"
+        text += f"\nСтатус: 🟢{status_success}"
     else:
-        text += f"\nСтатус: 🔴Ошибка"
+        text += f"\nСтатус: 🔴{status_error}"
 
     markup = TeleTypes.InlineKeyboardMarkup()
     markup.add(TeleTypes.InlineKeyboardButton(
